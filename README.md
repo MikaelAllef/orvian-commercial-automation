@@ -20,7 +20,7 @@
 
 <div align="center">
 
-<img src="./assets/workflow-switch.png" alt="Workflow de automação comercial ORVIAN no n8n" width="900"/>
+<img src="./workflow-switch.png" alt="Workflow de automação comercial ORVIAN no n8n" width="900"/>
 
 </div>
 
