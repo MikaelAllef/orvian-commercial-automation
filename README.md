@@ -27,6 +27,21 @@
 > **ORVIAN** utiliza uma arquitetura visual simples: o lead entra pelo formulário, seus dados são recebidos pelo Google Sheets, o n8n identifica o serviço solicitado e envia automaticamente uma comunicação específica.
 
 ---
+---
+
+## ✉️ Experiência do Lead
+
+Além da automação interna, o projeto também foi desenvolvido para proporcionar uma experiência de comunicação mais profissional ao potencial cliente.
+
+### Exemplo de e-mail recebido
+
+<div align="center">
+
+<img src="./email-preview.png" alt="Exemplo de e-mail recebido pelo lead" width="650"/>
+
+</div>
+
+> O lead recebe uma comunicação personalizada de acordo com o serviço selecionado no formulário.
 
 ## 🎯 Sobre o Projeto
 
