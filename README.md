@@ -27,6 +27,21 @@
 > **ORVIAN** utiliza uma arquitetura visual simples: o lead entra pelo formulário, seus dados são recebidos pelo Google Sheets, o n8n identifica o serviço solicitado e envia automaticamente uma comunicação específica.
 
 ---
+
+---
+
+## ⚙️ Workflow n8n
+
+O workflow completo está disponível para consulta e reutilização.
+
+<div align="center">
+
+[**→ Ver workflow n8n**](./workflow/orvian-commercial-automation.json)
+
+</div>
+
+> **Nota:** antes de executar o workflow, configure suas próprias credenciais do Google Sheets e Gmail e substitua os identificadores da planilha pelos seus.
+
 ---
 
 ## ✉️ Experiência do Lead
