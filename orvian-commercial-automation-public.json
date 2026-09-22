@@ -1,0 +1,328 @@
+{
+  "name": "ORVIAN — Commercial Automation (Public Template)",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Respostas ao formulário 1"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        320,
+        1488
+      ],
+      "id": "f2fef587-e14f-414b-9cca-a6bd5435528e",
+      "name": "01 • Novo Lead — Google Sheets"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Trabalho }}",
+                    "rightValue": "Identidade",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "64aea305-7941-4651-99d3-abdab03e9abd"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Identidade Visual"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ed8ae111-4650-4be4-af25-d488bbe9bdb6",
+                    "leftValue": "={{ $json.Trabalho }}",
+                    "rightValue": "Site",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Criação de Site"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9f3c2d1e-4a5b-4c6d-8e7f-1a2b3c4d5e6f",
+                    "leftValue": "={{ $json.Trabalho }}",
+                    "rightValue": "Instagram",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Instagram"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        1456
+      ],
+      "id": "caab1c19-d753-49c9-b5b6-737e345e7d34",
+      "name": "02 • Classificar Serviço"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail principal'] }}",
+        "subject": "=Próximos Passos: Construção da Identidade da {{ $json['Nome da Empresa'] }}",
+        "message": "=<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>ORVIAN — Identidade Visual</title>\n</head>\n\n<body style=\"margin:0;padding:0;background-color:#f3f3f1;font-family:Arial,Helvetica,sans-serif;color:#171717;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"\nstyle=\"background-color:#f3f3f1;padding:30px 0;\">\n\n<tr>\n<td align=\"center\">\n\n<table width=\"680\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"\nstyle=\"max-width:680px;width:100%;background-color:#ffffff;\">\n\n\n<!-- HEADER -->\n<tr>\n<td style=\"background-color:#111111;padding:38px 45px;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n\n<td>\n\n<div style=\"font-size:30px;font-weight:bold;letter-spacing:5px;color:#ffffff;\">\nORVI<span style=\"color:#c9a84c;\">A</span>N\n</div>\n\n<div style=\"margin-top:8px;font-size:10px;letter-spacing:4px;color:#c9a84c;\">\nMARCAS QUE GERAM RESULTADOS\n</div>\n\n</td>\n\n<td align=\"right\" valign=\"middle\">\n\n<div style=\"font-size:12px;color:#bdbdbd;\">\nIDENTIDADE VISUAL\n</div>\n\n<div style=\"margin-top:5px;font-size:12px;color:#ffffff;\">\nEstratégia & Identidade\n</div>\n\n</td>\n\n</tr>\n</table>\n\n</td>\n</tr>\n\n\n<!-- HERO -->\n<tr>\n<td style=\"padding:48px 45px 30px 45px;\">\n\n<div style=\"font-size:14px;color:#9b7a2e;font-weight:bold;\nletter-spacing:1px;margin-bottom:12px;\">\nSEJA BEM-VINDO À ORVIAN\n</div>\n\n<h1 style=\"margin:0;font-size:32px;line-height:1.2;color:#111111;\">\nVamos transformar a essência da sua marca em identidade.\n</h1>\n\n<p style=\"margin:22px 0 0 0;font-size:16px;line-height:1.7;color:#555555;\">\nOlá, <strong style=\"color:#111111;\">{{ $json[\"Nome Completo\"] }}</strong>!\n</p>\n\n<p style=\"margin:15px 0 0 0;font-size:16px;line-height:1.7;color:#555555;\">\nFicamos muito felizes em saber que você quer fortalecer a identidade da\n<strong style=\"color:#111111;\">{{ $json[\"Nome da Empresa\"] }}</strong>.\n</p>\n\n<p style=\"margin:15px 0 0 0;font-size:16px;line-height:1.7;color:#555555;\">\nNa ORVIAN, acreditamos que uma identidade visual vai muito além de um logo.\nEla precisa traduzir a essência da empresa, transmitir confiança e criar\numa presença reconhecível em cada ponto de contato.\n</p>\n\n</td>\n</tr>\n\n\n<!-- DIVISOR -->\n<tr>\n<td style=\"padding:0 45px;\">\n<div style=\"height:1px;background-color:#e5e5e5;\"></div>\n</td>\n</tr>\n\n\n<!-- INTRO -->\n<tr>\n<td style=\"padding:35px 45px 20px 45px;\">\n\n<h2 style=\"margin:0;font-size:22px;color:#111111;\">\nPara começarmos\n</h2>\n\n<p style=\"margin:12px 0 0 0;font-size:15px;line-height:1.7;color:#666666;\">\nAntes de desenvolvermos a identidade, queremos entender a história,\na personalidade, o posicionamento e a percepção que sua marca deseja construir.\n</p>\n\n</td>\n</tr>\n\n\n<!-- QUESTIONÁRIO -->\n<tr>\n<td style=\"padding:10px 45px 30px 45px;\">\n\n\n<!-- 01 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n01\n</div>\n</td>\n\n<td valign=\"top\">\n\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nSobre a empresa e sua história\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nConte um pouco sobre a empresa, sua história, área de atuação e\nprincipais produtos ou serviços.\n</div>\n\n</td>\n\n</tr>\n</table>\n\n\n<!-- 02 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n02\n</div>\n</td>\n\n<td valign=\"top\">\n\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nPersonalidade da marca\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nComo você gostaria que sua marca fosse percebida?\nPor exemplo: sofisticada, moderna, acessível, premium, forte,\ntecnológica, tradicional ou próxima.\n</div>\n\n</td>\n\n</tr>\n</table>\n\n\n<!-- 03 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n03\n</div>\n</td>\n\n<td valign=\"top\">\n\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nPúblico e posicionamento\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nQuem são seus principais clientes e como você gostaria que sua empresa\nfosse percebida no mercado?\n</div>\n\n</td>\n\n</tr>\n</table>\n\n\n<!-- 04 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n04\n</div>\n</td>\n\n<td valign=\"top\">\n\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nReferências visuais\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nCompartilhe marcas, identidades ou referências visuais que você gosta\nou considera alinhadas ao que deseja construir.\n</div>\n\n</td>\n\n</tr>\n</table>\n\n\n<!-- 05 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n05\n</div>\n</td>\n\n<td valign=\"top\">\n\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nMateriais e identidade atual\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nEnvie, se possuir, logo atual, paleta de cores, materiais gráficos,\nredes sociais, apresentações ou outros elementos da marca.\n</div>\n\n</td>\n\n</tr>\n</table>\n\n\n<!-- 06 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n06\n</div>\n</td>\n\n<td valign=\"top\">\n\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nO que você gostaria de mudar?\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nExiste algo na identidade atual da empresa que você sente que não\nrepresenta mais o negócio ou que gostaria de deixar para trás?\n</div>\n\n</td>\n\n</tr>\n</table>\n\n</td>\n</tr>\n\n\n<!-- CTA -->\n<tr>\n<td style=\"padding:10px 45px 45px 45px;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"\nstyle=\"background-color:#f7f4ed;border-left:4px solid #c9a84c;\">\n\n<tr>\n<td style=\"padding:22px 24px;\">\n\n<div style=\"font-size:16px;font-weight:bold;color:#111111;\">\nPróximo passo\n</div>\n\n<div style=\"margin-top:8px;font-size:14px;line-height:1.6;color:#666666;\">\nResponda este e-mail compartilhando essas informações e referências.\nQuanto melhor entendermos sua marca, mais alinhado será o direcionamento\nda identidade que vamos construir.\n</div>\n\n</td>\n</tr>\n\n</table>\n\n\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-top:25px;\">\n<tr>\n\n<td align=\"center\" style=\"background-color:#c9a84c;border-radius:4px;\">\n\n<a href=\"mailto:contato@seu-dominio.com\"\nstyle=\"display:inline-block;padding:16px 28px;font-size:13px;\nfont-weight:bold;letter-spacing:0.5px;color:#111111;text-decoration:none;\">\nRESPONDER ESTE E-MAIL &nbsp; →\n</a>\n\n</td>\n\n</tr>\n</table>\n\n</td>\n</tr>\n\n\n<!-- ASSINATURA -->\n<tr>\n<td style=\"padding:0 45px 45px 45px;\">\n\n<div style=\"font-size:14px;color:#777777;\">\nEstamos à disposição para qualquer dúvida.\n</div>\n\n<div style=\"margin-top:28px;font-size:14px;color:#777777;\">\nAbraços,\n</div>\n\n<div style=\"margin-top:5px;font-size:18px;font-weight:bold;color:#111111;\">\nEquipe ORVIAN\n</div>\n\n<div style=\"margin-top:8px;font-size:10px;letter-spacing:3px;color:#c9a84c;\">\nESTRATÉGIA &nbsp; • &nbsp; CRIAÇÃO &nbsp; • &nbsp; RESULTADOS\n</div>\n\n</td>\n</tr>\n\n\n<!-- FOOTER -->\n<tr>\n<td style=\"background-color:#111111;padding:30px 45px;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n\n<td>\n\n<div style=\"font-size:24px;font-weight:bold;letter-spacing:4px;color:#ffffff;\">\nORVI<span style=\"color:#c9a84c;\">A</span>N\n</div>\n\n<div style=\"margin-top:7px;font-size:9px;letter-spacing:3px;color:#999999;\">\nMARCAS QUE GERAM RESULTADOS\n</div>\n\n</td>\n\n<td align=\"right\">\n\n<div style=\"font-size:13px;color:#c9a84c;\">\nVamos construir\n</div>\n\n<div style=\"font-size:13px;color:#ffffff;\">\no próximo nível da sua marca?\n</div>\n\n</td>\n\n</tr>\n</table>\n\n<div style=\"height:1px;background-color:#333333;margin:25px 0 18px 0;\"></div>\n\n<div style=\"font-size:11px;color:#777777;text-align:center;\">\nORVIAN • Estratégia, criação e soluções digitais\n</div>\n\n</td>\n</tr>\n\n</table>\n\n</td>\n</tr>\n</table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        1264
+      ],
+      "id": "bc3e9c16-89de-42ee-a3b3-cbdc4732a932",
+      "name": "03 • E-mail — Identidade Visual",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "sendTo": "seu-email-interno@exemplo.com",
+        "subject": "=Linha não identificada no formulário ({{ $json['Nome da Empresa'] || $json['Nome Completo'] || 'sem nome' }})",
+        "emailType": "text",
+        "message": "=Uma nova linha chegou na planilha, mas o valor do campo \"Trabalho\" não contém nem \"Identidade\" nem \"Site\" — as duas palavras-chave usadas no Switch para identificar o tipo de serviço.\n\nValor recebido em Trabalho: {{ $json.Trabalho }}\n\nDados completos da linha:\n{{ JSON.stringify($json, null, 2) }}\n\nVerifique a planilha e, se for um novo tipo de serviço, atualize as condições do node Switch.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        1904
+      ],
+      "id": "1c44b48c-b7cb-4f5a-a590-db557ac832a2",
+      "name": "06 • Alerta — Serviço Não Identificado",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail principal'] }}",
+        "subject": "=Próximos Passos: Instagram Profissional da {{ $json['Nome da Empresa'] }}",
+        "message": "=<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>ORVIAN — Próximos passos</title>\n</head>\n\n<body style=\"margin:0; padding:0; background-color:#f3f3f1; font-family:Arial, Helvetica, sans-serif; color:#171717;\">\n\n  <!-- CONTAINER PRINCIPAL -->\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f3f3f1; margin:0; padding:30px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <!-- CARD -->\n        <table width=\"680\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"max-width:680px; width:100%; background-color:#ffffff;\">\n\n          <!-- HEADER -->\n          <tr>\n            <td style=\"background-color:#111111; padding:38px 45px;\">\n\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                <tr>\n\n                  <td>\n                    <div style=\"font-size:30px; font-weight:bold; letter-spacing:5px; color:#ffffff;\">\n                      ORVI<span style=\"color:#c9a84c;\">A</span>N\n                    </div>\n\n                    <div style=\"margin-top:8px; font-size:10px; letter-spacing:4px; color:#c9a84c;\">\n                      MARCAS QUE GERAM RESULTADOS\n                    </div>\n                  </td>\n\n                  <td align=\"right\" valign=\"middle\">\n                    <div style=\"font-size:12px; color:#bdbdbd;\">\n                      INSTAGRAM\n                    </div>\n\n                    <div style=\"margin-top:5px; font-size:12px; color:#ffffff;\">\n                      Estratégia & Conteúdo\n                    </div>\n                  </td>\n\n                </tr>\n              </table>\n\n            </td>\n          </tr>\n\n\n          <!-- DESTAQUE -->\n          <tr>\n            <td style=\"padding:48px 45px 30px 45px;\">\n\n              <div style=\"font-size:14px; color:#9b7a2e; font-weight:bold; letter-spacing:1px; margin-bottom:12px;\">\n                SEJA BEM-VINDO À ORVIAN\n              </div>\n\n              <h1 style=\"margin:0; font-size:32px; line-height:1.2; color:#111111;\">\n                Vamos fortalecer a presença da sua marca.\n              </h1>\n\n              <p style=\"margin:22px 0 0 0; font-size:16px; line-height:1.7; color:#555555;\">\n                Olá, <strong style=\"color:#111111;\">{{ $json[\"Nome Completo\"] }}</strong>!\n              </p>\n\n              <p style=\"margin:15px 0 0 0; font-size:16px; line-height:1.7; color:#555555;\">\n                Ficamos muito felizes em saber que você quer fortalecer a presença da\n                <strong style=\"color:#111111;\">{{ $json[\"Nome da Empresa\"] }}</strong>\n                no Instagram de forma profissional.\n              </p>\n\n              <p style=\"margin:15px 0 0 0; font-size:16px; line-height:1.7; color:#555555;\">\n                Na ORVIAN, cuidamos da gestão e produção de conteúdo para transformar\n                o Instagram em um canal estratégico para o seu negócio.\n              </p>\n\n            </td>\n          </tr>\n\n\n          <!-- DIVISOR -->\n          <tr>\n            <td style=\"padding:0 45px;\">\n              <div style=\"height:1px; background-color:#e5e5e5;\"></div>\n            </td>\n          </tr>\n\n\n          <!-- INTRODUÇÃO -->\n          <tr>\n            <td style=\"padding:35px 45px 20px 45px;\">\n\n              <h2 style=\"margin:0; font-size:22px; color:#111111;\">\n                Para começarmos\n              </h2>\n\n              <p style=\"margin:12px 0 0 0; font-size:15px; line-height:1.7; color:#666666;\">\n                Para entendermos melhor o seu negócio e construirmos uma estratégia\n                alinhada à sua realidade, precisamos de algumas informações.\n              </p>\n\n            </td>\n          </tr>\n\n\n          <!-- BLOCO DE INFORMAÇÕES -->\n          <tr>\n            <td style=\"padding:10px 45px 30px 45px;\">\n\n              <!-- ITEM 1 -->\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:12px;\">\n                <tr>\n                  <td width=\"48\" valign=\"top\">\n                    <div style=\"width:34px; height:34px; line-height:34px; text-align:center; background-color:#111111; color:#c9a84c; font-weight:bold; border-radius:50%;\">\n                      01\n                    </div>\n                  </td>\n\n                  <td valign=\"top\">\n                    <div style=\"font-size:15px; font-weight:bold; color:#111111;\">\n                      Ramo de atuação\n                    </div>\n\n                    <div style=\"margin-top:5px; font-size:14px; line-height:1.5; color:#666666;\">\n                      Quais são os principais produtos ou serviços da sua empresa?\n                    </div>\n                  </td>\n                </tr>\n              </table>\n\n\n              <!-- ITEM 2 -->\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:12px;\">\n                <tr>\n                  <td width=\"48\" valign=\"top\">\n                    <div style=\"width:34px; height:34px; line-height:34px; text-align:center; background-color:#111111; color:#c9a84c; font-weight:bold; border-radius:50%;\">\n                      02\n                    </div>\n                  </td>\n\n                  <td valign=\"top\">\n                    <div style=\"font-size:15px; font-weight:bold; color:#111111;\">\n                      Objetivo com o Instagram\n                    </div>\n\n                    <div style=\"margin-top:5px; font-size:14px; line-height:1.5; color:#666666;\">\n                      Você quer vender, engajar, divulgar sua marca, atrair clientes\n                      ou alcançar outro objetivo?\n                    </div>\n                  </td>\n                </tr>\n              </table>\n\n\n              <!-- ITEM 3 -->\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:12px;\">\n                <tr>\n                  <td width=\"48\" valign=\"top\">\n                    <div style=\"width:34px; height:34px; line-height:34px; text-align:center; background-color:#111111; color:#c9a84c; font-weight:bold; border-radius:50%;\">\n                      03\n                    </div>\n                  </td>\n\n                  <td valign=\"top\">\n                    <div style=\"font-size:15px; font-weight:bold; color:#111111;\">\n                      Referências\n                    </div>\n\n                    <div style=\"margin-top:5px; font-size:14px; line-height:1.5; color:#666666;\">\n                      Compartilhe perfis que você gosta ou considera alinhados\n                      à sua empresa.\n                    </div>\n                  </td>\n                </tr>\n              </table>\n\n\n              <!-- ITEM 4 -->\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:12px;\">\n                <tr>\n                  <td width=\"48\" valign=\"top\">\n                    <div style=\"width:34px; height:34px; line-height:34px; text-align:center; background-color:#111111; color:#c9a84c; font-weight:bold; border-radius:50%;\">\n                      04\n                    </div>\n                  </td>\n\n                  <td valign=\"top\">\n                    <div style=\"font-size:15px; font-weight:bold; color:#111111;\">\n                      Materiais que já possui\n                    </div>\n\n                    <div style=\"margin-top:5px; font-size:14px; line-height:1.5; color:#666666;\">\n                      Logo, identidade visual, fotos, vídeos e outras informações\n                      da empresa.\n                    </div>\n                  </td>\n                </tr>\n              </table>\n\n\n              <!-- ITEM 5 -->\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                <tr>\n                  <td width=\"48\" valign=\"top\">\n                    <div style=\"width:34px; height:34px; line-height:34px; text-align:center; background-color:#111111; color:#c9a84c; font-weight:bold; border-radius:50%;\">\n                      05\n                    </div>\n                  </td>\n\n                  <td valign=\"top\">\n                    <div style=\"font-size:15px; font-weight:bold; color:#111111;\">\n                      Frequência de postagens\n                    </div>\n\n                    <div style=\"margin-top:5px; font-size:14px; line-height:1.5; color:#666666;\">\n                      Qual frequência de postagens você imagina ou espera?\n                    </div>\n                  </td>\n                </tr>\n              </table>\n\n            </td>\n          </tr>\n\n\n          <!-- CTA -->\n          <tr>\n            <td style=\"padding:10px 45px 45px 45px;\">\n\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"\n                     style=\"background-color:#f7f4ed; border-left:4px solid #c9a84c;\">\n\n                <tr>\n                  <td style=\"padding:22px 24px;\">\n\n                    <div style=\"font-size:16px; font-weight:bold; color:#111111;\">\n                      Próximo passo\n                    </div>\n\n                    <div style=\"margin-top:8px; font-size:14px; line-height:1.6; color:#666666;\">\n                      É só responder este e-mail compartilhando essas informações\n                      e referências. Se preferir, pode enviar tudo em um único arquivo.\n                    </div>\n\n                  </td>\n                </tr>\n\n              </table>\n\n\n              <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-top:25px;\">\n                <tr>\n                  <td align=\"center\" style=\"background-color:#c9a84c; border-radius:4px;\">\n\n                    <a href=\"mailto:contato@seu-dominio.com\"\n                       style=\"display:inline-block; padding:16px 28px; font-size:13px; font-weight:bold; letter-spacing:0.5px; color:#111111; text-decoration:none;\">\n                      RESPONDER ESTE E-MAIL &nbsp; →\n                    </a>\n\n                  </td>\n                </tr>\n              </table>\n\n            </td>\n          </tr>\n\n\n          <!-- ASSINATURA -->\n          <tr>\n            <td style=\"padding:0 45px 45px 45px;\">\n\n              <div style=\"font-size:14px; color:#777777;\">\n                Estamos à disposição para qualquer dúvida.\n              </div>\n\n              <div style=\"margin-top:28px; font-size:14px; color:#777777;\">\n                Abraços,\n              </div>\n\n              <div style=\"margin-top:5px; font-size:18px; font-weight:bold; color:#111111;\">\n                Equipe ORVIAN\n              </div>\n\n              <div style=\"margin-top:8px; font-size:10px; letter-spacing:3px; color:#c9a84c;\">\n                ESTRATÉGIA &nbsp; • &nbsp; CRIAÇÃO &nbsp; • &nbsp; RESULTADOS\n              </div>\n\n            </td>\n          </tr>\n\n\n          <!-- FOOTER -->\n          <tr>\n            <td style=\"background-color:#111111; padding:30px 45px;\">\n\n              <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n                <tr>\n\n                  <td>\n                    <div style=\"font-size:24px; font-weight:bold; letter-spacing:4px; color:#ffffff;\">\n                      ORVI<span style=\"color:#c9a84c;\">A</span>N\n                    </div>\n\n                    <div style=\"margin-top:7px; font-size:9px; letter-spacing:3px; color:#999999;\">\n                      MARCAS QUE GERAM RESULTADOS\n                    </div>\n                  </td>\n\n                  <td align=\"right\">\n                    <div style=\"font-size:13px; color:#c9a84c;\">\n                      Vamos construir\n                    </div>\n\n                    <div style=\"font-size:13px; color:#ffffff;\">\n                      o próximo nível da sua marca?\n                    </div>\n                  </td>\n\n                </tr>\n              </table>\n\n              <div style=\"height:1px; background-color:#333333; margin:25px 0 18px 0;\"></div>\n\n              <div style=\"font-size:11px; color:#777777; text-align:center;\">\n                ORVIAN • Estratégia, criação e soluções digitais\n              </div>\n\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        1696
+      ],
+      "id": "3f2a7f52-3998-4f34-bba1-6c038ee312c1",
+      "name": "05 • E-mail — Instagram",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail principal'] }}",
+        "subject": "=Próximos Passos: Projeto Digital da {{ $json['Nome da Empresa'] }}",
+        "message": "=<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>ORVIAN — Projeto Digital</title>\n</head>\n\n<body style=\"margin:0; padding:0; background-color:#f3f3f1; font-family:Arial, Helvetica, sans-serif; color:#171717;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f3f3f1; padding:30px 0;\">\n<tr>\n<td align=\"center\">\n\n<table width=\"680\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"\nstyle=\"max-width:680px; width:100%; background-color:#ffffff;\">\n\n<!-- HEADER -->\n<tr>\n<td style=\"background-color:#111111; padding:38px 45px;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n\n<td>\n<div style=\"font-size:30px; font-weight:bold; letter-spacing:5px; color:#ffffff;\">\nORVI<span style=\"color:#c9a84c;\">A</span>N\n</div>\n\n<div style=\"margin-top:8px; font-size:10px; letter-spacing:4px; color:#c9a84c;\">\nMARCAS QUE GERAM RESULTADOS\n</div>\n</td>\n\n<td align=\"right\" valign=\"middle\">\n<div style=\"font-size:12px; color:#bdbdbd;\">\nPROJETO DIGITAL\n</div>\n\n<div style=\"margin-top:5px; font-size:12px; color:#ffffff;\">\nEstratégia & Presença\n</div>\n</td>\n\n</tr>\n</table>\n\n</td>\n</tr>\n\n\n<!-- HERO -->\n<tr>\n<td style=\"padding:48px 45px 30px 45px;\">\n\n<div style=\"font-size:14px; color:#9b7a2e; font-weight:bold; letter-spacing:1px; margin-bottom:12px;\">\nSEJA BEM-VINDO À ORVIAN\n</div>\n\n<h1 style=\"margin:0; font-size:32px; line-height:1.2; color:#111111;\">\nVamos construir a presença digital da sua marca.\n</h1>\n\n<p style=\"margin:22px 0 0 0; font-size:16px; line-height:1.7; color:#555555;\">\nOlá, <strong style=\"color:#111111;\">{{ $json[\"Nome Completo\"] }}</strong>!\n</p>\n\n<p style=\"margin:15px 0 0 0; font-size:16px; line-height:1.7; color:#555555;\">\nFicamos muito felizes em saber que você quer desenvolver a presença digital da\n<strong style=\"color:#111111;\">{{ $json[\"Nome da Empresa\"] }}</strong>.\n</p>\n\n<p style=\"margin:15px 0 0 0; font-size:16px; line-height:1.7; color:#555555;\">\nNa ORVIAN, não pensamos apenas em criar uma página. Estruturamos experiências\ndigitais que ajudam sua empresa a apresentar seus serviços, transmitir confiança\ne transformar visitantes em oportunidades.\n</p>\n\n</td>\n</tr>\n\n\n<!-- DIVISOR -->\n<tr>\n<td style=\"padding:0 45px;\">\n<div style=\"height:1px; background-color:#e5e5e5;\"></div>\n</td>\n</tr>\n\n\n<!-- INTRO -->\n<tr>\n<td style=\"padding:35px 45px 20px 45px;\">\n\n<h2 style=\"margin:0; font-size:22px; color:#111111;\">\nPara começarmos\n</h2>\n\n<p style=\"margin:12px 0 0 0; font-size:15px; line-height:1.7; color:#666666;\">\nAntes de definirmos a estrutura do projeto, queremos entender melhor\no seu negócio, seus objetivos e o que você espera dessa presença digital.\n</p>\n\n</td>\n</tr>\n\n\n<!-- QUESTIONÁRIO -->\n<tr>\n<td style=\"padding:10px 45px 30px 45px;\">\n\n\n<!-- 01 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n01\n</div>\n</td>\n\n<td valign=\"top\">\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nSobre a empresa\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nQual é o ramo de atuação da empresa e quais são os principais\nprodutos ou serviços oferecidos?\n</div>\n</td>\n</tr>\n</table>\n\n\n<!-- 02 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n02\n</div>\n</td>\n\n<td valign=\"top\">\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nObjetivo do projeto\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nO que você espera alcançar com o site? Apresentar a empresa, gerar\ncontatos, vender, divulgar serviços, receber agendamentos ou outro objetivo?\n</div>\n</td>\n</tr>\n</table>\n\n\n<!-- 03 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n03\n</div>\n</td>\n\n<td valign=\"top\">\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nEstrutura desejada\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nQuais páginas, informações ou funcionalidades você imagina que\no projeto precisa ter?\n</div>\n</td>\n</tr>\n</table>\n\n\n<!-- 04 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-bottom:18px;\">\n<tr>\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n04\n</div>\n</td>\n\n<td valign=\"top\">\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nReferências\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nCompartilhe sites, páginas ou referências que você gosta ou considera\nalinhadas à sua empresa.\n</div>\n</td>\n</tr>\n</table>\n\n\n<!-- 05 -->\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n<td width=\"48\" valign=\"top\">\n<div style=\"width:34px;height:34px;line-height:34px;text-align:center;\nbackground-color:#111111;color:#c9a84c;font-weight:bold;border-radius:50%;\">\n05\n</div>\n</td>\n\n<td valign=\"top\">\n<div style=\"font-size:15px;font-weight:bold;color:#111111;\">\nMateriais disponíveis\n</div>\n\n<div style=\"margin-top:5px;font-size:14px;line-height:1.5;color:#666666;\">\nVocê já possui logo, identidade visual, fotos, textos, vídeos,\napresentações ou outros materiais que poderão ser utilizados no projeto?\n</div>\n</td>\n</tr>\n</table>\n\n</td>\n</tr>\n\n\n<!-- CTA -->\n<tr>\n<td style=\"padding:10px 45px 45px 45px;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"\nstyle=\"background-color:#f7f4ed;border-left:4px solid #c9a84c;\">\n\n<tr>\n<td style=\"padding:22px 24px;\">\n\n<div style=\"font-size:16px;font-weight:bold;color:#111111;\">\nPróximo passo\n</div>\n\n<div style=\"margin-top:8px;font-size:14px;line-height:1.6;color:#666666;\">\nResponda este e-mail compartilhando essas informações e referências.\nA partir disso, conseguiremos entender melhor o cenário e estruturar\nos próximos passos do projeto.\n</div>\n\n</td>\n</tr>\n</table>\n\n\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"margin-top:25px;\">\n<tr>\n<td align=\"center\" style=\"background-color:#c9a84c;border-radius:4px;\">\n\n<a href=\"mailto:contato@seu-dominio.com\"\nstyle=\"display:inline-block;padding:16px 28px;font-size:13px;\nfont-weight:bold;letter-spacing:0.5px;color:#111111;text-decoration:none;\">\nRESPONDER ESTE E-MAIL &nbsp; →\n</a>\n\n</td>\n</tr>\n</table>\n\n</td>\n</tr>\n\n\n<!-- ASSINATURA -->\n<tr>\n<td style=\"padding:0 45px 45px 45px;\">\n\n<div style=\"font-size:14px;color:#777777;\">\nEstamos à disposição para qualquer dúvida.\n</div>\n\n<div style=\"margin-top:28px;font-size:14px;color:#777777;\">\nAbraços,\n</div>\n\n<div style=\"margin-top:5px;font-size:18px;font-weight:bold;color:#111111;\">\nEquipe ORVIAN\n</div>\n\n<div style=\"margin-top:8px;font-size:10px;letter-spacing:3px;color:#c9a84c;\">\nESTRATÉGIA &nbsp; • &nbsp; CRIAÇÃO &nbsp; • &nbsp; RESULTADOS\n</div>\n\n</td>\n</tr>\n\n\n<!-- FOOTER -->\n<tr>\n<td style=\"background-color:#111111;padding:30px 45px;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n\n<td>\n<div style=\"font-size:24px;font-weight:bold;letter-spacing:4px;color:#ffffff;\">\nORVI<span style=\"color:#c9a84c;\">A</span>N\n</div>\n\n<div style=\"margin-top:7px;font-size:9px;letter-spacing:3px;color:#999999;\">\nMARCAS QUE GERAM RESULTADOS\n</div>\n</td>\n\n<td align=\"right\">\n<div style=\"font-size:13px;color:#c9a84c;\">\nVamos construir\n</div>\n\n<div style=\"font-size:13px;color:#ffffff;\">\no próximo nível da sua marca?\n</div>\n</td>\n\n</tr>\n</table>\n\n<div style=\"height:1px;background-color:#333333;margin:25px 0 18px 0;\"></div>\n\n<div style=\"font-size:11px;color:#777777;text-align:center;\">\nORVIAN • Estratégia, criação e soluções digitais\n</div>\n\n</td>\n</tr>\n\n</table>\n\n</td>\n</tr>\n</table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        1472
+      ],
+      "id": "4ea8c1df-a2c2-4498-aa2d-d8192931c686",
+      "name": "04 • E-mail — Criação de Site",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 256,
+        "width": 256,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        1424
+      ],
+      "typeVersion": 1,
+      "id": "549f1f67-ce27-4397-afab-fc79e34fd4a7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 256,
+        "width": 256,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        512,
+        1424
+      ],
+      "typeVersion": 1,
+      "id": "29281bff-434d-425b-816b-4de86535f7e6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 624,
+        "width": 288,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        1232
+      ],
+      "typeVersion": 1,
+      "id": "773df80d-1840-4518-a21e-d09af7aa19f1",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 208,
+        "width": 288,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        1872
+      ],
+      "typeVersion": 1,
+      "id": "f6e10ea9-613d-4b73-8fab-03a511e434df",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "01 • Novo Lead — Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "02 • Classificar Serviço",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "02 • Classificar Serviço": {
+      "main": [
+        [
+          {
+            "node": "03 • E-mail — Identidade Visual",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "04 • E-mail — Criação de Site",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "05 • E-mail — Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "06 • Alerta — Serviço Não Identificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {},
+  "nodeGroups": [],
+  "tags": []
+}
